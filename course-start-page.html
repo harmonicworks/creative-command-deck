@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creative Command Deck — Silent Library Edition</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --muted:#aab1c7; --text:#e6e8ef;
+    --ink:#0b1022; --brand:#7aa2ff; --accent:#66e0a3; --music:#ffb86b; --danger:#ff6b6b;
+    --br:16px; --shadow:0 8px 24px rgba(0,0,0,.28)
+  }
+  @media (prefers-color-scheme:light){
+    :root{ --bg:#f6f7fb; --panel:#ffffff; --muted:#5a6275; --text:#141821; --ink:#0b1022;
+      --brand:#345dff; --accent:#0aa86e; --music:#ffb86b; --danger:#e54242; --shadow:0 6px 18px rgba(18,28,58,.12) }
+  }
+  *{ box-sizing:border-box }
+  html,body{ height:100% }
+  body{
+    margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background:var(--bg); color:var(--text)
+  }
+  .wrap{ max-width:1000px; margin:32px auto; padding:0 16px 56px }
+  header{ display:flex; gap:12px; align-items:flex-end; justify-content:space-between; margin-bottom:18px }
+  .title{ font-weight:800; letter-spacing:.2px; font-size:clamp(18px,3.6vw,28px) }
+  .sub{ color:var(--muted); font-size:clamp(12px,2.2vw,14px) }
+  .panel{
+    background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:var(--br);
+    padding:16px; box-shadow:var(--shadow)
+  }
+  .chooser{ display:grid; gap:12px; grid-template-columns:1fr; margin-top:10px }
+  @media (min-width:560px){ .chooser{ grid-template-columns:1fr 1fr 1fr } }
+  .btn{
+    appearance:none; border:0; border-radius:12px; padding:14px 16px; font-weight:800; cursor:pointer;
+    background:#1e232d; color:var(--text); box-shadow:var(--shadow); text-align:center;
+    font-size:clamp(14px,2.6vw,16px)
+  }
+  .btn:hover{ transform:translateY(-1px) }
+  .b-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink) }
+  .b-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015 }
+  .b-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300 }
+  .b-dark{ background:#1e232d }
+  .b-muted{ background:#232835; color:var(--muted) }
+
+  .stack{ display:grid; gap:12px }
+  .card{
+    background:#1b202a; border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px;
+  }
+  @media (prefers-color-scheme:light){
+    .card{ background:#f0f3f9; border-color:rgba(0,0,0,.06) }
+  }
+  h2{ margin:0 0 8px; font-size:clamp(16px,3vw,18px) }
+  p.lead{ margin:0 0 8px; color:var(--muted); font-size:clamp(12px,2.4vw,14px) }
+
+  .linkbar{ display:flex; flex-wrap:wrap; gap:8px }
+  .link{
+    text-decoration:none; font-weight:800; padding:12px 14px; border-radius:12px; display:inline-block
+  }
+  .l-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink) }
+  .l-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015 }
+  .l-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300 }
+  .l-dark{ background:#232835; color:var(--text) }
+
+  .muted{ color:var(--muted); font-size:12px }
+  .field{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.08);
+    background:#141821; color:var(--text); font-size:14px }
+  @media (prefers-color-scheme:light){ .field{ background:#ffffff; border-color:rgba(0,0,0,.08) } }
+
+  .bar{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:10px 0 4px }
+  .clock{ font-variant-numeric:tabular-nums; padding:8px 10px; border-radius:10px; background:#1b202a; border:1px solid rgba(255,255,255,.06) }
+  @media (prefers-color-scheme:light){ .clock{ background:#eef2f8; border-color:rgba(0,0,0,.06) } }
+
+  .shelf{ display:grid; gap:12px; grid-template-columns:1fr }
+  @media (min-width:640px){ .shelf{ grid-template-columns:1fr 1fr 1fr 1fr } }
+  .tile{ background:#1b202a; border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px }
+  @media (prefers-color-scheme:light){ .tile{ background:#f0f3f9; border-color:rgba(0,0,0,.06) } }
+  .tile h3{ margin:0 0 6px; font-size:15px }
+  .tile ul{ margin:0; padding-left:18px; line-height:1.8 }
+  .tile a{ color:inherit }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="title">Creative Command Deck</div>
+      <div class="sub">Pick what you want to do. The deck adapts, quietly.</div>
+    </div>
+    <div class="bar">
+      <div class="clock" id="clock">--:--</div>
+      <button class="btn b-muted" id="homeBtn" title="Back to chooser" style="display:none" type="button">Back</button>
+    </div>
+  </header>
+
+  <!-- MODE CHOOSER -->
+  <section id="chooser" class="panel" aria-label="Mode chooser">
+    <h2>What do you want to do today?</h2>
+    <p class="lead">One choice. The cockpit will show only what you need for that path.</p>
+    <div class="chooser">
+      <button class="btn b-accent" type="button" onclick="go('korean')">Learn Korean</button>
+      <button class="btn b-brand"  type="button" onclick="go('writing')">Write</button>
+      <button class="btn b-music"  type="button" onclick="go('music')">Make Music</button>
+      <button class="btn b-dark"   type="button" onclick="go('code')">Code (Python)</button>
+      <button class="btn b-dark"   type="button" onclick="go('library')">Explore Library</button>
+    </div>
+  </section>
+
+  <!-- MODE VIEW -->
+  <section id="mode" class="panel" style="display:none" aria-live="polite">
+    <div id="modeHeader"></div>
+    <div id="modeBody" class="stack"></div>
+  </section>
+
+  <!-- PERMANENT SHELVES -->
+  <section class="panel" style="margin-top:14px">
+    <h2>Silent Library Shelves</h2>
+    <p class="lead">Always-available quiet shelves for finished or reference material.</p>
+    <div class="shelf">
+      <div class="tile">
+        <h3>📚 Writing</h3>
+        <ul>
+          <li><a href="https://docs.google.com/" target="_blank" rel="noopener">Google Docs (manuscripts)</a></li>
+          <li><a href="https://github.com/dashboard" target="_blank" rel="noopener">GitHub (essays/site)</a></li>
+        </ul>
+      </div>
+      <div class="tile">
+        <h3>🎶 Music</h3>
+        <ul>
+          <li><a href="https://bandcamp.com" target="_blank" rel="noopener">Bandcamp</a></li>
+          <li><a href="https://soundcloud.com" target="_blank" rel="noopener">SoundCloud</a></li>
+        </ul>
+      </div>
+      <div class="tile">
+        <h3>💻 Code</h3>
+        <ul>
+          <li><a href="https://github.com/dashboard" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code (download/info)</a></li>
+        </ul>
+      </div>
+      <div class="tile">
+        <h3>🧠 Study</h3>
+        <ul>
+          <li><a href="https://ethics-of-ai.mooc.fi/" target="_blank" rel="noopener">MOOC.fi Ethics & AI</a></li>
+          <li><a href="https://programming-25.mooc.fi/" target="_blank" rel="noopener">MOOC.fi Python</a></li>
+          <li><a href="https://www.futurelearn.com/your-courses" target="_blank" rel="noopener">FutureLearn</a></li>
+          <li><a href="https://www.khanacademy.org/" target="_blank" rel="noopener">Khan Academy</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <p class="muted" style="margin-top:12px">Tip: each mode has a tiny “Next step” box saved per mode. Keep it one sentence.</p>
+</div>
+
+<script>
+  // Clock
+  function tick(){
+    const d = new Date(); const hh=String(d.getHours()).padStart(2,'0'); const mm=String(d.getMinutes()).padStart(2,'0');
+    document.getElementById('clock').textContent = `${hh}:${mm}`;
+  }
+  setInterval(tick, 1000); tick();
+
+  // Local storage helpers
+  const store = {
+    get(k, d=''){ try{ return localStorage.getItem(k) ?? d }catch(e){ return d } },
+    set(k, v){ try{ localStorage.setItem(k, v) }catch(e){} }
+  };
+
+  // Preset modes (now each includes Notion links)
+  const MODES = {
+    korean: {
+      title: "🇰🇷 Learn Korean",
+      lead: "Backbone = Sogang. Light = TTMIK. Daily = Hancom Taja.",
+      links: [
+        { label:"Korean Dashboard (Notion)", href:"#", tag:"l-brand" },
+        { label:"Sogang 1A Tracker (Notion)", href:"#", tag:"l-accent" },
+        { label:"TTMIK", href:"https://www.talktomeinkorean.com/", tag:"l-dark" },
+        { label:"Hancom Taja (Typing)", href:"https://www.typing.co.kr/", tag:"l-dark" },
+        { label:"LingoDeer", href:"https://www.lingodeer.com/", tag:"l-dark" },
+        { label:"Linq", href:"https://www.linqapp.com/", tag:"l-dark" }
+      ],
+      noteKey: "next_korean",
+      extra: [
+        { kind:"text", title:"This week", text:"Sogang 1A — Lesson 1–2 • Daily: 10m typing + 2 sentences" },
+        { kind:"list", title:"Focus grammar", items:["이/가 vs 은/는","을/를","Present tense -아요/어요"] }
+      ]
+    },
+    writing: {
+      title: "✍️ Write",
+      lead: "Open one active doc. Move a single section forward.",
+      links: [
+        { label:"Writing Inbox (Notion)", href:"#", tag:"l-brand" },
+        { label:"Outline / Chapter Plan (Notion)", href:"#", tag:"l-accent" },
+        { label:"Open Today’s Writing (Docs)", href:"https://docs.google.com/", tag:"l-dark" },
+        { label:"GitHub Pages (site)", href:"https://github.com/dashboard", tag:"l-dark" }
+      ],
+      noteKey: "next_writing",
+      extra: [
+        { kind:"text", title:"Checklist", text:"Thesis in one line → body → quiet close. Keep it simple." }
+      ]
+    },
+    music: {
+      title: "🎶 Make Music",
+      lead: "One mix move or one recorded idea is enough.",
+      links: [
+        { label:"Mix Notes (Notion)", href:"#", tag:"l-brand" },
+        { label:"Practice Log (Notion)", href:"#", tag:"l-accent" },
+        { label:"Bandcamp (release shelf)", href:"https://bandcamp.com", tag:"l-music" },
+        { label:"SoundCloud (sketches)", href:"https://soundcloud.com", tag:"l-dark" }
+      ],
+      noteKey: "next_music",
+      extra: [
+        { kind:"list", title:"Micro-mix cues", items:["Gain stage bus A","Kick vs bass balance","Print a 30s preview"] }
+      ]
+    },
+    code: {
+      title: "💻 Code (Python)",
+      lead: "One exercise or one small function today.",
+      links: [
+        { label:"Python Notes (Notion)", href:"#", tag:"l-brand" },
+        { label:"Project Log (Notion)", href:"#", tag:"l-accent" },
+        { label:"MOOC.fi Python", href:"https://programming-25.mooc.fi/", tag:"l-dark" },
+        { label:"GitHub (projects)", href:"https://github.com/dashboard", tag:"l-dark" },
+        { label:"VS Code (info)", href:"https://code.visualstudio.com/", tag:"l-dark" }
+      ],
+      noteKey: "next_code",
+      extra: [
+        { kind:"list", title:"Today ideas", items:["Finish one MOOC exercise","Commit with a clear message","Write a tiny README note"] }
+      ]
+    },
+    library: {
+      title: "📚 Explore Library",
+      lead: "Browse your shelves without pressure. Just look; no need to ship.",
+      links: [
+        { label:"Library Index (Notion)", href:"#", tag:"l-brand" },
+        { label:"Writing shelf (Docs)", href:"https://docs.google.com/", tag:"l-dark" },
+        { label:"Music shelf (Bandcamp)", href:"https://bandcamp.com", tag:"l-music" },
+        { label:"Code shelf (GitHub)", href:"https://github.com/dashboard", tag:"l-dark" }
+      ],
+      noteKey: "next_library",
+      extra: [
+        { kind:"text", title:"Reminder", text:"Exploration is allowed to end without a task. Let ideas breathe." }
+      ]
+    }
+  };
+
+  const elChooser = document.getElementById('chooser');
+  const elMode = document.getElementById('mode');
+  const elHead = document.getElementById('modeHeader');
+  const elBody = document.getElementById('modeBody');
+  const homeBtn = document.getElementById('homeBtn');
+
+  // Public helper for inline onclick
+  function go(mode){ renderMode(mode); }
+
+  function renderMode(key){
+    const m = MODES[key]; if(!m) return;
+    elHead.innerHTML = `<h2 style="margin:0 0 6px">${m.title}</h2><p class="lead">${m.lead}</p>`;
+    const frag = document.createDocumentFragment();
+
+    // Primary actions
+    const actions = document.createElement('div');
+    actions.className = 'card';
+    const links = document.createElement('div');
+    links.className = 'linkbar';
+    m.links.forEach(l=>{
+      const a = document.createElement('a');
+      a.className = `link ${l.tag}`; a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = l.label; links.appendChild(a);
+    });
+    actions.appendChild(links);
+    frag.appendChild(actions);
+
+    // Extra guidance
+    (m.extra||[]).forEach(x=>{
+      const c = document.createElement('div'); c.className = 'card';
+      c.innerHTML = `<h3 style="margin:0 0 8px;font-size:15px">${x.title}</h3>`;
+      if(x.kind === 'text'){
+        const p = document.createElement('p'); p.className = 'muted'; p.textContent = x.text; c.appendChild(p);
+      } else if(x.kind === 'list'){
+        const ul = document.createElement('ul'); ul.style.margin = '0'; ul.style.paddingLeft='18px';
+        x.items.forEach(it=>{ const li = document.createElement('li'); li.textContent = it; ul.appendChild(li) });
+        c.appendChild(ul);
+      }
+      frag.appendChild(c);
+    });
+
+    // Next step (per-mode)
+    const note = document.createElement('div'); note.className = 'card';
+    note.innerHTML = `<h3 style="margin:0 0 8px;font-size:15px">Next step</h3>`;
+    const input = document.createElement('input'); input.className = 'field';
+    input.placeholder = 'Keep this one sentence long…';
+    input.value = store.get(m.noteKey,'');
+    input.addEventListener('change', ()=> store.set(m.noteKey, input.value.trim()));
+    note.appendChild(input);
+    const hint = document.createElement('div'); hint.className='muted'; hint.style.marginTop='6px';
+    hint.textContent = 'Saved locally. Aim for a single nudge, not a to-do list.';
+    note.appendChild(hint);
+    frag.appendChild(note);
+
+    elBody.innerHTML = '';
+    elBody.appendChild(frag);
+
+    // Toggle views
+    elChooser.style.display = 'none';
+    elMode.style.display = 'block';
+    homeBtn.style.display = 'inline-block';
+    store.set('last_mode', key);
+  }
+
+  // Back button
+  homeBtn.addEventListener('click', ()=>{
+    elMode.style.display = 'none';
+    elChooser.style.display = 'block';
+    homeBtn.style.display = 'none';
+  });
+
+  // Restore last mode for continuity
+  const last = store.get('last_mode','');
+  if(last && MODES[last]) renderMode(last);
+</script>
+</body>
+</html>
