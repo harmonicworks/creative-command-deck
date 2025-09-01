@@ -77,6 +77,17 @@
   .tile h3{ margin:0 0 6px; font-size:15px }
   .tile ul{ margin:0; padding-left:18px; line-height:1.8 }
   .tile a{ color:inherit }
+
+  /* Inline link editor */
+  .editor-bar{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap }
+  .editor-card{ background:#141821; border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:12px; margin-top:10px }
+  .editor-row{ display:grid; grid-template-columns:1.2fr 2fr auto; gap:8px; align-items:center; margin-bottom:8px }
+  .editor-row .field{ padding:8px 10px; font-size:13px }
+  .editor-actions{ display:flex; gap:8px; margin-top:8px; flex-wrap:wrap }
+  .small{ font-size:12px }
+  @media (prefers-color-scheme:light){
+    .editor-card{ background:#ffffff; border-color:rgba(0,0,0,.08) }
+  }
 </style>
 </head>
 <body>
@@ -97,10 +108,14 @@
     <h2>What do you want to do today?</h2>
     <p class="lead">One choice. The cockpit will show only what you need for that path.</p>
     <div class="chooser">
+      <!-- Top row -->
       <button class="btn b-accent" type="button" onclick="go('korean')">Learn Korean</button>
-      <button class="btn b-brand"  type="button" onclick="go('writing')">Write</button>
-      <button class="btn b-music"  type="button" onclick="go('music')">Make Music</button>
       <button class="btn b-dark"   type="button" onclick="go('code')">Code (Python)</button>
+      <button class="btn b-brand"  type="button" onclick="go('ethics')">Ethics (AI)</button>
+      <!-- Bottom row -->
+      <button class="btn b-music"  type="button" onclick="go('music')">Make Music</button>
+      <button class="btn b-brand"  type="button" onclick="go('writing')">Write</button>
+      <!-- Last -->
       <button class="btn b-dark"   type="button" onclick="go('library')">Explore Library</button>
     </div>
   </section>
@@ -116,6 +131,13 @@
     <h2>Silent Library Shelves</h2>
     <p class="lead">Always-available quiet shelves for finished or reference material.</p>
     <div class="shelf">
+      <div class="tile">
+        <h3>🧘 Focus</h3>
+        <ul>
+          <li><a href="https://chat.openai.com/" target="_blank" rel="noopener">Ava (ChatGPT)</a></li>
+          <li><a href="https://www.youtube.com/@ObsidianSoundfields" target="_blank" rel="noopener">Obsidian Soundfields (study music)</a></li>
+        </ul>
+      </div>
       <div class="tile">
         <h3>📚 Writing</h3>
         <ul>
@@ -134,13 +156,12 @@
         <h3>💻 Code</h3>
         <ul>
           <li><a href="https://github.com/dashboard" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code (download/info)</a></li>
         </ul>
       </div>
       <div class="tile">
         <h3>🧠 Study</h3>
         <ul>
-          <li><a href="https://ethics-of-ai.mooc.fi/" target="_blank" rel="noopener">MOOC.fi Ethics & AI</a></li>
+          <li><a href="https://ethics-of-ai.mooc.fi/" target="_blank" rel="noopener">MOOC.fi Ethics &amp; AI</a></li>
           <li><a href="https://programming-25.mooc.fi/" target="_blank" rel="noopener">MOOC.fi Python</a></li>
           <li><a href="https://www.futurelearn.com/your-courses" target="_blank" rel="noopener">FutureLearn</a></li>
           <li><a href="https://www.khanacademy.org/" target="_blank" rel="noopener">Khan Academy</a></li>
@@ -153,6 +174,9 @@
 </div>
 
 <script>
+    // App version
+  const APP_VERSION = '1.0.0';
+  
   // Clock
   function tick(){
     const d = new Date(); const hh=String(d.getHours()).padStart(2,'0'); const mm=String(d.getMinutes()).padStart(2,'0');
@@ -166,7 +190,24 @@
     set(k, v){ try{ localStorage.setItem(k, v) }catch(e){} }
   };
 
-  // Preset modes (now each includes Notion links)
+  // Link override helpers (per-mode)
+  function getModeLinks(key, baseLinks){
+    const raw = store.get(`links_${key}`, '');
+    if(!raw) return baseLinks;
+    try{
+      const arr = JSON.parse(raw);
+      return arr.filter(Boolean).map(x=>({
+        label: x.label || 'Link',
+        href:  x.href  || '#',
+        tag:   x.tag   || 'l-dark'
+      }));
+    }catch(e){ return baseLinks }
+  }
+  function setModeLinks(key, arr){
+    store.set(`links_${key}`, JSON.stringify(arr));
+  }
+
+  // Preset modes (with Notion placeholders you can replace)
   const MODES = {
     korean: {
       title: "🇰🇷 Learn Korean",
@@ -185,18 +226,32 @@
         { kind:"list", title:"Focus grammar", items:["이/가 vs 은/는","을/를","Present tense -아요/어요"] }
       ]
     },
-    writing: {
-      title: "✍️ Write",
-      lead: "Open one active doc. Move a single section forward.",
+    code: {
+      title: "💻 Code (Python)",
+      lead: "One exercise or one small function today.",
       links: [
-        { label:"Writing Inbox (Notion)", href:"#", tag:"l-brand" },
-        { label:"Outline / Chapter Plan (Notion)", href:"#", tag:"l-accent" },
-        { label:"Open Today’s Writing (Docs)", href:"https://docs.google.com/", tag:"l-dark" },
-        { label:"GitHub Pages (site)", href:"https://github.com/dashboard", tag:"l-dark" }
+        { label:"Python Notes (Notion)", href:"#", tag:"l-brand" },
+        { label:"Project Log (Notion)", href:"#", tag:"l-accent" },
+        { label:"MOOC.fi Python", href:"https://programming-25.mooc.fi/", tag:"l-dark" },
+        { label:"GitHub (projects)", href:"https://github.com/dashboard", tag:"l-dark" }
       ],
-      noteKey: "next_writing",
+      noteKey: "next_code",
       extra: [
-        { kind:"text", title:"Checklist", text:"Thesis in one line → body → quiet close. Keep it simple." }
+        { kind:"list", title:"Today ideas", items:["Finish one MOOC exercise","Commit with a clear message","Write a tiny README note"] }
+      ]
+    },
+    ethics: {
+      title: "⚖️ Ethics (AI)",
+      lead: "Study and reflect — one concept, one case.",
+      links: [
+        { label:"Ethics Notes (Notion)", href:"#", tag:"l-brand" },
+        { label:"Case Log (Notion)", href:"#", tag:"l-accent" },
+        { label:"Ethics of AI (MOOC.fi)", href:"https://ethics-of-ai.mooc.fi/", tag:"l-dark" },
+        { label:"Reading List (Docs)", href:"https://docs.google.com/", tag:"l-dark" }
+      ],
+      noteKey: "next_ethics",
+      extra: [
+        { kind:"list", title:"Focus topics", items:["Algorithmic bias","Fairness & accountability","Human–AI collaboration"] }
       ]
     },
     music: {
@@ -213,19 +268,18 @@
         { kind:"list", title:"Micro-mix cues", items:["Gain stage bus A","Kick vs bass balance","Print a 30s preview"] }
       ]
     },
-    code: {
-      title: "💻 Code (Python)",
-      lead: "One exercise or one small function today.",
+    writing: {
+      title: "✍️ Write",
+      lead: "Open one active doc. Move a single section forward.",
       links: [
-        { label:"Python Notes (Notion)", href:"#", tag:"l-brand" },
-        { label:"Project Log (Notion)", href:"#", tag:"l-accent" },
-        { label:"MOOC.fi Python", href:"https://programming-25.mooc.fi/", tag:"l-dark" },
-        { label:"GitHub (projects)", href:"https://github.com/dashboard", tag:"l-dark" },
-        { label:"VS Code (info)", href:"https://code.visualstudio.com/", tag:"l-dark" }
+        { label:"Writing Inbox (Notion)", href:"#", tag:"l-brand" },
+        { label:"Outline / Chapter Plan (Notion)", href:"#", tag:"l-accent" },
+        { label:"Open Today’s Writing (Docs)", href:"https://docs.google.com/", tag:"l-dark" },
+        { label:"GitHub Pages (site)", href:"https://github.com/dashboard", tag:"l-dark" }
       ],
-      noteKey: "next_code",
+      noteKey: "next_writing",
       extra: [
-        { kind:"list", title:"Today ideas", items:["Finish one MOOC exercise","Commit with a clear message","Write a tiny README note"] }
+        { kind:"text", title:"Checklist", text:"Thesis in one line → body → quiet close. Keep it simple." }
       ]
     },
     library: {
@@ -263,12 +317,109 @@
     actions.className = 'card';
     const links = document.createElement('div');
     links.className = 'linkbar';
-    m.links.forEach(l=>{
+
+    // apply per-mode overrides if any
+    const effectiveLinks = getModeLinks(key, m.links);
+
+    // build link buttons with smart-placeholder behavior
+    effectiveLinks.forEach(l=>{
       const a = document.createElement('a');
-      a.className = `link ${l.tag}`; a.href = l.href; a.target = "_blank"; a.rel = "noopener";
-      a.textContent = l.label; links.appendChild(a);
+      a.className = `link ${l.tag}`;
+      a.target = "_blank"; a.rel = "noopener";
+
+      // storage key based on mode + label
+      const keySlug = `url_${key}_${l.label.replace(/\W+/g,'').toLowerCase()}`;
+      const saved = store.get(keySlug, '');
+      a.href = saved || (l.href || '#');
+      a.textContent = l.label;
+
+      a.addEventListener('click', (e)=>{
+        if (a.getAttribute('href') === '#') {
+          e.preventDefault();
+          const hint = l.label.includes('Notion') ? 'your Notion page URL' : 'the target URL';
+          const url = prompt(`Paste ${hint} for “${l.label}”`, 'https://');
+          if (url && /^https?:\/\//i.test(url)) {
+            store.set(keySlug, url.trim());
+            a.href = url.trim();
+            window.open(url.trim(), '_blank', 'noopener');
+          } else if (url !== null) {
+            alert('That does not look like a valid http(s) URL.');
+          }
+        }
+      });
+
+      links.appendChild(a);
     });
     actions.appendChild(links);
+
+    // --- editor toggle
+    const editorBar = document.createElement('div');
+    editorBar.className = 'editor-bar';
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'btn b-muted';
+    editBtn.textContent = 'Edit links';
+    editorBar.appendChild(editBtn);
+    actions.appendChild(editorBar);
+
+    // editor card (hidden by default)
+    const editor = document.createElement('div');
+    editor.className = 'editor-card';
+    editor.style.display = 'none';
+    actions.appendChild(editor);
+
+    function renderEditor(){
+      editor.innerHTML = '';
+      const rowsWrap = document.createElement('div');
+
+      // working copy
+      let working = getModeLinks(key, m.links).map(x=>({...x}));
+
+      function drawRows(){
+        rowsWrap.innerHTML = '';
+        working.forEach((item, idx)=>{
+          const row = document.createElement('div'); row.className='editor-row';
+          const inLabel = document.createElement('input'); inLabel.className='field'; inLabel.value=item.label; inLabel.placeholder='Label';
+          const inHref  = document.createElement('input'); inHref.className='field'; inHref.value=item.href;  inHref.placeholder='https://…';
+          const del = document.createElement('button'); del.type='button'; del.className='btn b-dark'; del.textContent='✕';
+          del.addEventListener('click', ()=>{ working.splice(idx,1); drawRows(); });
+          inLabel.addEventListener('input', ()=> item.label = inLabel.value);
+          inHref.addEventListener('input',  ()=> item.href  = inHref.value);
+          row.appendChild(inLabel); row.appendChild(inHref); row.appendChild(del);
+          rowsWrap.appendChild(row);
+        });
+      }
+      drawRows();
+      editor.appendChild(rowsWrap);
+
+      const actionsRow = document.createElement('div'); actionsRow.className='editor-actions';
+      const addBtn  = document.createElement('button'); addBtn.type='button'; addBtn.className='btn b-dark'; addBtn.textContent='Add link';
+      addBtn.addEventListener('click', ()=>{ working.push({label:'New Link', href:'#', tag:'l-dark'}); drawRows(); });
+
+      const saveBtn = document.createElement('button'); saveBtn.type='button'; saveBtn.className='btn b-accent'; saveBtn.textContent='Save';
+      saveBtn.addEventListener('click', ()=>{
+        const cleaned = working.map(x=>{
+          const href = (x.href || '').trim();
+          const ok = href === '#' || /^https?:\/\//i.test(href);
+          return { label:(x.label||'Link').trim() || 'Link', href: ok ? href : '#', tag: x.tag || 'l-dark' };
+        });
+        setModeLinks(key, cleaned);
+        renderMode(key); // re-render to apply
+      });
+
+      const cancelBtn = document.createElement('button'); cancelBtn.type='button'; cancelBtn.className='btn b-muted'; cancelBtn.textContent='Cancel';
+      cancelBtn.addEventListener('click', ()=>{ editor.style.display='none'; });
+
+      const note = document.createElement('div'); note.className='muted small'; note.textContent = 'Tip: Use # as a placeholder. First click will ask for the real URL and save it.';
+      actionsRow.appendChild(addBtn); actionsRow.appendChild(saveBtn); actionsRow.appendChild(cancelBtn);
+      editor.appendChild(actionsRow); editor.appendChild(note);
+    }
+
+    editBtn.addEventListener('click', ()=>{
+      if(editor.style.display === 'none'){ renderEditor(); editor.style.display='block'; }
+      else editor.style.display='none';
+    });
+
     frag.appendChild(actions);
 
     // Extra guidance
@@ -305,7 +456,7 @@
     elChooser.style.display = 'none';
     elMode.style.display = 'block';
     homeBtn.style.display = 'inline-block';
-    store.set('last_mode', key);
+    store.set('last_mode', key); // kept for potential future resume, not used on load
   }
 
   // Back button
@@ -315,9 +466,8 @@
     homeBtn.style.display = 'none';
   });
 
-  // Restore last mode for continuity
-  const last = store.get('last_mode','');
-  if(last && MODES[last]) renderMode(last);
+  // Start at chooser by default (no auto-resume)
+  // (We still store last_mode when you pick one, in case we add an optional resume later.)
 </script>
 </body>
 </html>
