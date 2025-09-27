@@ -211,19 +211,20 @@
   const MODES = {
     korean: {
       title: "🇰🇷 Learn Korean",
-      lead: "Backbone = Sogang. Light = TTMIK. Daily = Hancom Taja.",
+      lead: "Daily = Hancom Taja. Core = LingoDeer + TTMIK. Sogang later for dialogue practice.",
       links: [
         { label:"Korean Dashboard (Notion)", href:"#", tag:"l-brand" },
         { label:"Sogang 1A Tracker (Notion)", href:"#", tag:"l-accent" },
-        { label:"TTMIK", href:"https://www.talktomeinkorean.com/", tag:"l-dark" },
-        { label:"Hancom Taja (Typing)", href:"https://www.typing.co.kr/", tag:"l-dark" },
-        { label:"LingoDeer", href:"https://www.lingodeer.com/", tag:"l-dark" },
+        { label:"TTMIK — Curriculum by Level", href:"https://courses.talktomeinkorean.com/course-curriculum-by-level", tag:"l-dark" },
+        { label:"Hancom Taja (Typing)", href:"https://www.hancomtaja.com/#main__taja", tag:"l-dark" },
+        { label:"LingoDeer — Lessons", href:"https://www.lingodeer.com/learn-languages/kr/en/learn-korean-online", tag:"l-dark" },
+        { label:"LingoDeer — Review", href:"https://www.lingodeer.com/learn-languages/kr/en/learn-korean-online/review", tag:"l-dark" },
         { label:"Linq", href:"https://www.linqapp.com/", tag:"l-dark" }
       ],
       noteKey: "next_korean",
       extra: [
-        { kind:"text", title:"This week", text:"Sogang 1A — Lesson 1–2 • Daily: 10m typing + 2 sentences" },
-        { kind:"list", title:"Focus grammar", items:["이/가 vs 은/는","을/를","Present tense -아요/어요"] }
+        { kind:"text", title:"This week", text:"Daily: 5–10m Taja → 1 LingoDeer lesson → 1 TTMIK core. Weekend: quick Sogang dialogue." },
+        { kind:"list", title:"Focus grammar", items:["이에요/예요","은/는 vs 이/가","-았/었어요 (past)"] }
       ]
     },
     code: {
@@ -249,7 +250,7 @@
         { label:"Ethics of AI (MOOC.fi)", href:"https://ethics-of-ai.mooc.fi/", tag:"l-dark" },
         { label:"Reading List (Docs)", href:"https://docs.google.com/", tag:"l-dark" }
       ],
-      noteKey: "next_ethics",
+        noteKey: "next_ethics",
       extra: [
         { kind:"list", title:"Focus topics", items:["Algorithmic bias","Fairness & accountability","Human–AI collaboration"] }
       ]
@@ -420,7 +421,9 @@
       else editor.style.display='none';
     });
 
-    frag.appendChild(actions);
+    const fragLinks = actions; // keep name parity
+    
+    frag.appendChild(fragLinks);
 
     // Extra guidance
     (m.extra||[]).forEach(x=>{
@@ -438,7 +441,7 @@
 
     // Next step (per-mode)
     const note = document.createElement('div'); note.className = 'card';
-    note.innerHTML = `<h3 style="margin:0 0 8px;font-size:15px">Next step</h3>`;
+    note.innerHTML = `<h3 style=\"margin:0 0 8px;font-size:15px\">Next step</h3>`;
     const input = document.createElement('input'); input.className = 'field';
     input.placeholder = 'Keep this one sentence long…';
     input.value = store.get(m.noteKey,'');
