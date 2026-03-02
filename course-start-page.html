@@ -1,139 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creative Command Deck</title>
+
+<style>
+:root{
+  --bg:#0f1115;
+  --panel:#171a21;
+  --muted:#aab1c7;
+  --text:#e6e8ef;
+  --ink:#0b1022;
+  --brand:#7aa2ff;
+  --accent:#66e0a3;
+  --music:#ffb86b;
+  --danger:#ff6b6b;
+  --br:16px;
+  --shadow:0 8px 24px rgba(0,0,0,.28);
+}
+
+@media (prefers-color-scheme:light){
+  :root{
+    --bg:#f6f7fb;
+    --panel:#ffffff;
+    --muted:#5a6275;
+    --text:#141821;
+    --ink:#0b1022;
+    --brand:#345dff;
+    --accent:#0aa86e;
+    --music:#ffb86b;
+    --danger:#e54242;
+    --shadow:0 6px 18px rgba(18,28,58,.12);
+  }
+}
+
+*{ box-sizing:border-box }
+html,body{ height:100% }
+
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.wrap{
+  max-width:1000px;
+  margin:32px auto;
+  padding:0 16px 56px;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:18px;
+}
+
+.title{
+  font-weight:800;
+  font-size:clamp(18px,3.6vw,28px);
+}
+
+.sub{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.panel{
+  background:var(--panel);
+  border-radius:var(--br);
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+
+.chooser{
+  display:grid;
+  gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+}
+
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:12px;
+  font-weight:800;
+  cursor:pointer;
+  color:var(--text);
+}
+
+.b-dark{ background:#1e232d; }
+.b-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink); }
+.b-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015; }
+.b-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300; }
+.b-muted{ background:#232835; color:var(--muted); }
+
+.shelf{
+  display:grid;
+  gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+}
+
+.tile{
+  background:#1b202a;
+  border-radius:14px;
+  padding:14px;
+}
+
+@media (prefers-color-scheme:light){
+  .tile{
+    background:#f0f3f9;
+  }
+}
+
+.tile h3{
+  margin:0 0 8px;
+  font-size:15px;
+}
+
+.tile ul{
+  margin:0;
+  padding-left:18px;
+  line-height:1.8;
+}
+
+.tile a{
+  color:inherit;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.clock{
+  font-variant-numeric:tabular-nums;
+  padding:8px 10px;
+  border-radius:10px;
+  background:#1b202a;
+}
+
+.tab{ display:none }
+.tab.active{ display:block }
+</style>
+</head>
+
 <body>
 <div class="wrap">
-  <header>
-    <div>
-      <div class="title">Creative Command Deck</div>
-      <div class="sub">Maintain · Learn · Language · Create · Connect</div>
-    </div>
-    <div class="bar">
-      <div class="clock" id="clock">--:--</div>
-    </div>
-  </header>
 
-  <!-- TABS -->
-  <section class="panel">
-    <div class="chooser">
-      <button class="btn b-dark" onclick="showTab('maintain')">Maintain</button>
-      <button class="btn b-brand" onclick="showTab('learn')">Learn</button>
-      <button class="btn b-accent" onclick="showTab('language')">Language</button>
-      <button class="btn b-music" onclick="showTab('create')">Create</button>
-      <button class="btn b-muted" onclick="showTab('connect')">Connect</button>
-    </div>
-  </section>
+<header>
+  <div>
+    <div class="title">Creative Command Deck</div>
+    <div class="sub">Maintain · Learn · Language · Create · Connect</div>
+  </div>
+  <div class="clock" id="clock">--:--</div>
+</header>
 
-  <!-- TAB CONTENT -->
-  <section class="panel" style="margin-top:14px">
-    <div id="maintain" class="tab">
-      <div class="shelf">
-        <div class="tile">
-          <h3>Infrastructure</h3>
-          <ul>
-            <li><a href="https://mail.google.com/" target="_blank">Email</a></li>
-            <li><a href="https://drive.google.com/" target="_blank">Google Drive</a></li>
-            <li><a href="https://www.dropbox.com/" target="_blank">Dropbox</a></li>
-            <li><a href="https://calendar.google.com/" target="_blank">Calendar</a></li>
-            <li><a href="https://photos.google.com/" target="_blank">Google Photos</a></li>
-            <li><a href="https://tasks.google.com/" target="_blank">Google Tasks</a></li>
-          </ul>
-        </div>
-        <div class="tile">
-          <h3>Marketplace</h3>
-          <ul>
-            <li><a href="https://www.vinted.com/" target="_blank">Vinted</a></li>
-            <li><a href="https://www.marktplaats.nl/" target="_blank">Marktplaats</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+<!-- Tabs -->
+<section class="panel">
+  <div class="chooser">
+    <button class="btn b-dark" onclick="showTab('maintain')">Maintain</button>
+    <button class="btn b-brand" onclick="showTab('learn')">Learn</button>
+    <button class="btn b-accent" onclick="showTab('language')">Language</button>
+    <button class="btn b-music" onclick="showTab('create')">Create</button>
+    <button class="btn b-muted" onclick="showTab('connect')">Connect</button>
+  </div>
+</section>
 
-    <div id="learn" class="tab" style="display:none">
-      <div class="shelf">
-        <div class="tile">
-          <h3>Courses</h3>
-          <ul>
-            <li><a href="https://www.mooc.fi/en/" target="_blank">MOOC.fi (AI & Python)</a></li>
-            <li><a href="https://www.futurelearn.com/" target="_blank">FutureLearn</a></li>
-            <li><a href="https://brilliant.org/" target="_blank">Brilliant</a></li>
-            <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
-          </ul>
-        </div>
-        <div class="tile">
-          <h3>Development</h3>
-          <ul>
-            <li><a href="https://github.com/dashboard" target="_blank">GitHub</a></li>
-            <li><a href="https://learn.microsoft.com/" target="_blank">Microsoft Learn</a></li>
-            <li><a href="https://grow.google/" target="_blank">Google Learning</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+<!-- Content -->
+<section class="panel" style="margin-top:14px">
 
-    <div id="language" class="tab" style="display:none">
-      <div class="shelf">
-        <div class="tile">
-          <h3>Korean Study</h3>
-          <ul>
-            <li><a href="https://taja.hancom.com/" target="_blank">Hancom Taja</a></li>
-            <li><a href="https://www.lingodeer.com/" target="_blank">LingoDeer</a></li>
-            <li><a href="https://www.lingq.com/" target="_blank">LingQ</a></li>
-            <li><a href="https://www.iksi.or.kr/" target="_blank">King Sejong Institute</a></li>
-            <li><a href="https://www.notion.so/" target="_blank">Language Notes (Notion)</a></li>
-          </ul>
-        </div>
-      </div>
+<!-- Maintain -->
+<div id="maintain" class="tab active">
+  <div class="shelf">
+    <div class="tile">
+      <h3>Infrastructure</h3>
+      <ul>
+        <li><a href="https://mail.google.com/" target="_blank">Email</a></li>
+        <li><a href="https://drive.google.com/" target="_blank">Google Drive</a></li>
+        <li><a href="https://www.dropbox.com/" target="_blank">Dropbox</a></li>
+        <li><a href="https://calendar.google.com/" target="_blank">Calendar</a></li>
+        <li><a href="https://photos.google.com/" target="_blank">Google Photos</a></li>
+        <li><a href="https://tasks.google.com/" target="_blank">Google Tasks</a></li>
+      </ul>
     </div>
-
-    <div id="create" class="tab" style="display:none">
-      <div class="shelf">
-        <div class="tile">
-          <h3>Music</h3>
-          <ul>
-            <li><a href="https://strudel.cc/" target="_blank">Strudel</a></li>
-            <li><a href="https://jazzguitar.be/" target="_blank">JazzGuitar.be</a></li>
-            <li><a href="https://music.youtube.com/" target="_blank">YouTube Music</a></li>
-            <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
-            <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
-          </ul>
-        </div>
-        <div class="tile">
-          <h3>Writing</h3>
-          <ul>
-            <li><a href="https://www.notion.so/" target="_blank">Notion Writing</a></li>
-            <li><a href="https://docs.google.com/" target="_blank">Google Docs</a></li>
-          </ul>
-        </div>
-      </div>
+    <div class="tile">
+      <h3>Marketplace</h3>
+      <ul>
+        <li><a href="https://www.vinted.com/" target="_blank">Vinted</a></li>
+        <li><a href="https://www.marktplaats.nl/" target="_blank">Marktplaats</a></li>
+      </ul>
     </div>
+  </div>
+</div>
 
-    <div id="connect" class="tab" style="display:none">
-      <div class="shelf">
-        <div class="tile">
-          <h3>Platforms</h3>
-          <ul>
-            <li><a href="https://youtube.com/" target="_blank">YouTube</a></li>
-            <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
-            <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
-          </ul>
-        </div>
-      </div>
+<!-- Learn -->
+<div id="learn" class="tab">
+  <div class="shelf">
+    <div class="tile">
+      <h3>Courses</h3>
+      <ul>
+        <li><a href="https://www.mooc.fi/en/" target="_blank">MOOC.fi (AI & Python)</a></li>
+        <li><a href="https://www.futurelearn.com/" target="_blank">FutureLearn</a></li>
+        <li><a href="https://brilliant.org/" target="_blank">Brilliant</a></li>
+        <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
+      </ul>
     </div>
+    <div class="tile">
+      <h3>Development</h3>
+      <ul>
+        <li><a href="https://github.com/dashboard" target="_blank">GitHub</a></li>
+        <li><a href="https://learn.microsoft.com/" target="_blank">Microsoft Learn</a></li>
+        <li><a href="https://grow.google/" target="_blank">Google Learning</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-  </section>
+<!-- Language -->
+<div id="language" class="tab">
+  <div class="shelf">
+    <div class="tile">
+      <h3>Korean Study</h3>
+      <ul>
+        <li><a href="https://taja.hancom.com/" target="_blank">Hancom Taja</a></li>
+        <li><a href="https://www.lingodeer.com/" target="_blank">LingoDeer</a></li>
+        <li><a href="https://www.lingq.com/" target="_blank">LingQ</a></li>
+        <li><a href="https://www.iksi.or.kr/" target="_blank">King Sejong Institute</a></li>
+        <li><a href="https://www.notion.so/" target="_blank">Language Notes (Notion)</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Create -->
+<div id="create" class="tab">
+  <div class="shelf">
+    <div class="tile">
+      <h3>Music</h3>
+      <ul>
+        <li><a href="https://strudel.cc/" target="_blank">Strudel</a></li>
+        <li><a href="https://jazzguitar.be/" target="_blank">JazzGuitar.be</a></li>
+        <li><a href="https://music.youtube.com/" target="_blank">YouTube Music</a></li>
+        <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
+        <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
+      </ul>
+    </div>
+    <div class="tile">
+      <h3>Writing</h3>
+      <ul>
+        <li><a href="https://www.notion.so/" target="_blank">Notion Writing</a></li>
+        <li><a href="https://docs.google.com/" target="_blank">Google Docs</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Connect -->
+<div id="connect" class="tab">
+  <div class="shelf">
+    <div class="tile">
+      <h3>Platforms</h3>
+      <ul>
+        <li><a href="https://youtube.com/" target="_blank">YouTube</a></li>
+        <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
+        <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</section>
 </div>
 
 <script>
-  function tick(){
-    const d = new Date();
-    const hh = String(d.getHours()).padStart(2,'0');
-    const mm = String(d.getMinutes()).padStart(2,'0');
-    document.getElementById('clock').textContent = `${hh}:${mm}`;
-  }
-  setInterval(tick, 1000);
-  tick();
+function tick(){
+  const d = new Date();
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mm = String(d.getMinutes()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${hh}:${mm}`;
+}
+setInterval(tick,1000);
+tick();
 
-  function showTab(tabId){
-    document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
-    document.getElementById(tabId).style.display = 'block';
-  }
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 </script>
+
 </body>
+</html>
