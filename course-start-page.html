@@ -1,323 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Creative Command Deck</title>
-<style>
-  :root{
-    --bg:#0f1115; --panel:#171a21; --muted:#aab1c7; --text:#e6e8ef;
-    --ink:#0b1022; --brand:#7aa2ff; --accent:#66e0a3; --music:#ffb86b; --danger:#ff6b6b;
-    --br:16px; --shadow:0 8px 24px rgba(0,0,0,.28)
-  }
-  @media (prefers-color-scheme:light){
-    :root{
-      --bg:#f6f7fb; --panel:#ffffff; --muted:#5a6275; --text:#141821; --ink:#0b1022;
-      --brand:#345dff; --accent:#0aa86e; --music:#ffb86b; --danger:#e54242;
-      --shadow:0 6px 18px rgba(18,28,58,.12)
-    }
-  }
-  *{ box-sizing:border-box }
-  html,body{ height:100% }
-  body{
-    margin:0;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-    background:var(--bg);
-    color:var(--text);
-  }
-  .wrap{
-    max-width:1000px;
-    margin:32px auto;
-    padding:0 16px 56px;
-  }
-  header{
-    display:flex;
-    gap:12px;
-    align-items:flex-end;
-    justify-content:space-between;
-    margin-bottom:18px;
-  }
-  .title{
-    font-weight:800;
-    letter-spacing:.2px;
-    font-size:clamp(18px,3.6vw,28px);
-  }
-  .sub{
-    color:var(--muted);
-    font-size:clamp(12px,2.2vw,14px);
-  }
-  .panel{
-    background:var(--panel);
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:var(--br);
-    padding:16px;
-    box-shadow:var(--shadow);
-  }
-
-  .chooser{
-    display:grid;
-    gap:12px;
-    grid-template-columns:1fr;
-    margin-top:10px;
-  }
-  @media (min-width:560px){
-    .chooser{ grid-template-columns:1fr 1fr 1fr; }
-  }
-
-  .btn{
-    appearance:none;
-    border:0;
-    border-radius:12px;
-    padding:14px 16px;
-    font-weight:800;
-    cursor:pointer;
-    background:#1e232d;
-    color:var(--text);
-    box-shadow:var(--shadow);
-    text-align:center;
-    font-size:clamp(14px,2.6vw,16px);
-  }
-  .btn:hover{ transform:translateY(-1px); }
-  .b-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink); }
-  .b-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015; }
-  .b-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300; }
-  .b-dark{ background:#1e232d; }
-  .b-muted{ background:#232835; color:var(--muted); }
-
-  .stack{
-    display:grid;
-    gap:12px;
-  }
-  .card{
-    background:#1b202a;
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:14px;
-    padding:14px;
-  }
-  @media (prefers-color-scheme:light){
-    .card{
-      background:#f0f3f9;
-      border-color:rgba(0,0,0,.06);
-    }
-  }
-
-  h2{
-    margin:0 0 8px;
-    font-size:clamp(16px,3vw,18px);
-  }
-  p.lead{
-    margin:0 0 8px;
-    color:var(--muted);
-    font-size:clamp(12px,2.4vw,14px);
-  }
-
-  .linkbar{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  .link{
-    text-decoration:none;
-    font-weight:800;
-    padding:12px 14px;
-    border-radius:12px;
-    display:inline-block;
-  }
-  .l-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink); }
-  .l-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015; }
-  .l-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300; }
-  .l-dark{ background:#232835; color:var(--text); }
-
-  .muted{
-    color:var(--muted);
-    font-size:12px;
-  }
-  .field{
-    width:100%;
-    padding:10px 12px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,.08);
-    background:#141821;
-    color:var(--text);
-    font-size:14px;
-  }
-  @media (prefers-color-scheme:light){
-    .field{
-      background:#ffffff;
-      border-color:rgba(0,0,0,.08);
-    }
-  }
-
-  .bar{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    flex-wrap:wrap;
-    margin:10px 0 4px;
-  }
-  .clock{
-    font-variant-numeric:tabular-nums;
-    padding:8px 10px;
-    border-radius:10px;
-    background:#1b202a;
-    border:1px solid rgba(255,255,255,.06);
-  }
-  @media (prefers-color-scheme:light){
-    .clock{
-      background:#eef2f8;
-      border-color:rgba(0,0,0,.06);
-    }
-  }
-
-  .shelf{
-    display:grid;
-    gap:12px;
-    grid-template-columns:1fr;
-  }
-  @media (min-width:640px){
-    .shelf{ grid-template-columns:1fr 1fr 1fr 1fr; }
-  }
-  .tile{
-    background:#1b202a;
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:14px;
-    padding:14px;
-  }
-  @media (prefers-color-scheme:light){
-    .tile{
-      background:#f0f3f9;
-      border-color:rgba(0,0,0,.06);
-    }
-  }
-  .tile h3{
-    margin:0 0 6px;
-    font-size:15px;
-  }
-  .tile ul{
-    margin:0;
-    padding-left:18px;
-    line-height:1.8;
-  }
-  .tile a{ color:inherit; }
-</style>
-</head>
 <body>
 <div class="wrap">
   <header>
     <div>
       <div class="title">Creative Command Deck</div>
-      <div class="sub">Choose your creative path</div>
+      <div class="sub">Maintain · Learn · Language · Create · Connect</div>
     </div>
     <div class="bar">
       <div class="clock" id="clock">--:--</div>
-      <button class="btn b-muted" id="homeBtn" title="Back to chooser" style="display:none" type="button">Back</button>
     </div>
   </header>
 
-  <!-- MODE CHOOSER -->
-  <section id="chooser" class="panel" aria-label="Mode chooser">
-    <h2>What do you want to do today?</h2>
-    <p class="lead">Choose a creative mode.</p>
+  <!-- TABS -->
+  <section class="panel">
     <div class="chooser">
-      <button class="btn b-accent" type="button" onclick="go('learn')">Learn</button>
-      <button class="btn b-brand"  type="button" onclick="go('create')">Create</button>
-      <button class="btn b-dark"   type="button" onclick="go('research')">Research</button>
+      <button class="btn b-dark" onclick="showTab('maintain')">Maintain</button>
+      <button class="btn b-brand" onclick="showTab('learn')">Learn</button>
+      <button class="btn b-accent" onclick="showTab('language')">Language</button>
+      <button class="btn b-music" onclick="showTab('create')">Create</button>
+      <button class="btn b-muted" onclick="showTab('connect')">Connect</button>
     </div>
   </section>
 
-  <!-- MODE VIEW -->
-  <section id="mode" class="panel" style="display:none" aria-live="polite">
-    <div id="modeHeader"></div>
-    <div id="modeBody" class="stack"></div>
-  </section>
-
-  <!-- PERMANENT SHELVES -->
+  <!-- TAB CONTENT -->
   <section class="panel" style="margin-top:14px">
-    <h2>Creative Shelves</h2>
-    <p class="lead">Always-available shelves for reference and background tools.</p>
-    <div class="shelf">
-      <!-- Focus / AI assistants -->
-      <div class="tile">
-        <h3>🧘 Focus</h3>
-        <ul>
-          <li><a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT</a></li>
-          <li><a href="https://gemini.google.com/" target="_blank" rel="noopener">Google Gemini</a></li>
-          <li><a href="https://notebooklm.google.com/" target="_blank" rel="noopener">Google NotebookLM</a></li>
-          <li><a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a></li>
-          <li><a href="https://copilot.microsoft.com/" target="_blank" rel="noopener">Microsoft Copilot</a></li>
-        </ul>
-      </div>
-
-      <!-- Writing & projects -->
-      <div class="tile">
-        <h3>✍️ Writing</h3>
-        <ul>
-          <li><a href="https://www.notion.so/" target="_blank" rel="noopener">Notion Workspace</a></li>
-          <li><a href="https://docs.google.com/" target="_blank" rel="noopener">Writing Docs (Google Docs)</a></li>
-          <li><a href="https://github.com/dashboard" target="_blank" rel="noopener">GitHub (Writing / Projects)</a></li>
-          <li><a href="https://photos.google.com" target="_blank" rel="noopener">Google Photos</a></li>
-          <li><a href="https://tasks.google.com" target="_blank" rel="noopener">Google tasks</a></li>
-          <li><a href="https://www.behance.net" target="_blank" rel="noopener">Behance Photos</a></li>
-        </ul>
-      </div>
-
-      <!-- Study music -->
-      <div class="tile">
-        <h3>🎶 Study Music</h3>
-        <ul>
-          <li><a href="https://music.youtube.com/" target="_blank" rel="noopener">YouTube Music</a></li>
-          <li><a href="https://bandcamp.com" target="_blank" rel="noopener">Bandcamp</a></li>
-          <li><a href="https://soundcloud.com" target="_blank" rel="noopener">SoundCloud</a></li>
-        </ul>
-      </div>
-
-      <!-- Study platforms -->
-      <div class="tile">
-        <h3>🧠 Study</h3>
-        <ul>
-          <li><a href="https://www.mooc.fi/en/" target="_blank" rel="noopener">MOOC.fi</a></li>
-          <li><a href="https://www.futurelearn.com/" target="_blank" rel="noopener">FutureLearn</a></li>
-          <li><a href="https://www.khanacademy.org/" target="_blank" rel="noopener">Khan Academy</a></li>
-          <li><a href="https://grow.google/" target="_blank" rel="noopener">Google Learning</a></li>
-          <li><a href="https://learn.microsoft.com/" target="_blank" rel="noopener">Microsoft Learn</a></li>
-        </ul>
-      </div>
-
-      <!-- General links -->
-      <div class="tile">
-        <h3>General</h3>
-        <ul>
-          <li><a href="https://mail.google.com/" target="_blank" rel="noopener">Email</a></li>
-          <li><a href="https://drive.google.com/" target="_blank" rel="noopener">Cloud Storage (Drive)</a></li>
-          <li><a href="https://www.dropbox.com/" target="_blank" rel="noopener">Cloud Storage (Dropbox)</a></li>
-          <li><a href="https://calendar.google.com/" target="_blank" rel="noopener">Calendar</a></li>
-          <li><a href="https://youtube.com/" target="_blank" rel="noopener">YouTube</a></li>
-        </ul>
-      </div>
-
-
-      <!-- Extra Sites -->
-      <div class="tile">
-        <h3>General</h3>
-        <ul>
-          <li><a href="https://www.vinted.com/" target="_blank" rel="noopener">Vinted</a></li>
-          <li><a href="https://www.marktplaats.nl/" target="_blank" rel="noopener">Marktplaats</a></li>
-
-        </ul>
+    <div id="maintain" class="tab">
+      <div class="shelf">
+        <div class="tile">
+          <h3>Infrastructure</h3>
+          <ul>
+            <li><a href="https://mail.google.com/" target="_blank">Email</a></li>
+            <li><a href="https://drive.google.com/" target="_blank">Google Drive</a></li>
+            <li><a href="https://www.dropbox.com/" target="_blank">Dropbox</a></li>
+            <li><a href="https://calendar.google.com/" target="_blank">Calendar</a></li>
+            <li><a href="https://photos.google.com/" target="_blank">Google Photos</a></li>
+            <li><a href="https://tasks.google.com/" target="_blank">Google Tasks</a></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="https://www.vinted.com/" target="_blank">Vinted</a></li>
+            <li><a href="https://www.marktplaats.nl/" target="_blank">Marktplaats</a></li>
+          </ul>
+        </div>
       </div>
     </div>
-  </section>
 
-  <p class="muted" style="margin-top:12px">
-    Tip: each mode has a tiny “Next step” box saved per mode. Keep it one sentence.
-  </p>
+    <div id="learn" class="tab" style="display:none">
+      <div class="shelf">
+        <div class="tile">
+          <h3>Courses</h3>
+          <ul>
+            <li><a href="https://www.mooc.fi/en/" target="_blank">MOOC.fi (AI & Python)</a></li>
+            <li><a href="https://www.futurelearn.com/" target="_blank">FutureLearn</a></li>
+            <li><a href="https://brilliant.org/" target="_blank">Brilliant</a></li>
+            <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Development</h3>
+          <ul>
+            <li><a href="https://github.com/dashboard" target="_blank">GitHub</a></li>
+            <li><a href="https://learn.microsoft.com/" target="_blank">Microsoft Learn</a></li>
+            <li><a href="https://grow.google/" target="_blank">Google Learning</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="language" class="tab" style="display:none">
+      <div class="shelf">
+        <div class="tile">
+          <h3>Korean Study</h3>
+          <ul>
+            <li><a href="https://taja.hancom.com/" target="_blank">Hancom Taja</a></li>
+            <li><a href="https://www.lingodeer.com/" target="_blank">LingoDeer</a></li>
+            <li><a href="https://www.lingq.com/" target="_blank">LingQ</a></li>
+            <li><a href="https://www.iksi.or.kr/" target="_blank">King Sejong Institute</a></li>
+            <li><a href="https://www.notion.so/" target="_blank">Language Notes (Notion)</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="create" class="tab" style="display:none">
+      <div class="shelf">
+        <div class="tile">
+          <h3>Music</h3>
+          <ul>
+            <li><a href="https://strudel.cc/" target="_blank">Strudel</a></li>
+            <li><a href="https://jazzguitar.be/" target="_blank">JazzGuitar.be</a></li>
+            <li><a href="https://music.youtube.com/" target="_blank">YouTube Music</a></li>
+            <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
+            <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Writing</h3>
+          <ul>
+            <li><a href="https://www.notion.so/" target="_blank">Notion Writing</a></li>
+            <li><a href="https://docs.google.com/" target="_blank">Google Docs</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="connect" class="tab" style="display:none">
+      <div class="shelf">
+        <div class="tile">
+          <h3>Platforms</h3>
+          <ul>
+            <li><a href="https://youtube.com/" target="_blank">YouTube</a></li>
+            <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
+            <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
 </div>
 
 <script>
-  // App version (for your own reference)
-  const APP_VERSION = '2.0.0';
-
-  // Clock
   function tick(){
     const d = new Date();
     const hh = String(d.getHours()).padStart(2,'0');
@@ -327,140 +131,9 @@
   setInterval(tick, 1000);
   tick();
 
-  // Simple localStorage helper (for next-step notes)
-  const store = {
-    get(k, d=''){
-      try{ return localStorage.getItem(k) ?? d; }
-      catch(e){ return d; }
-    },
-    set(k, v){
-      try{ localStorage.setItem(k, v); }
-      catch(e){}
-    }
-  };
-
-  // Mode configuration (titles, descriptions, links, note keys)
-  const MODES = {
-    learn: {
-      title: "📚 Learn",
-      lead: "Open your learning cockpit: languages, coding, ethics, and more.",
-      links: [
-        { label:"Learn Dashboard (Notion)", href:"#", tag:"l-brand" },
-        { label:"Course Overview (Docs)", href:"#", tag:"l-accent" },
-        { label:"MOOC.fi", href:"https://www.mooc.fi/en/", tag:"l-dark" },
-        { label:"FutureLearn", href:"https://www.futurelearn.com/", tag:"l-dark" },
-        { label:"Khan Academy", href:"https://www.khanacademy.org/", tag:"l-dark" },
-        { label:"Google Learning", href:"https://grow.google/", tag:"l-dark" },
-        { label:"Microsoft Learn", href:"https://learn.microsoft.com/", tag:"l-dark" }
-      ],
-      noteKey: "next_learn"
-    },
-    create: {
-      title: "✍️ Create",
-      lead: "Write, build, or publish something small. One concrete move is enough.",
-      links: [
-        { label:"Projects Dashboard (Notion)", href:"#", tag:"l-brand" },
-        { label:"Writing Docs", href:"https://docs.google.com/", tag:"l-accent" },
-        { label:"GitHub Projects", href:"https://github.com/dashboard", tag:"l-dark" }
-      ],
-      noteKey: "next_create"
-    },
-    research: {
-      title: "🔍 Research",
-      lead: "Read, annotate, and think. Follow one thread of curiosity today.",
-      links: [
-        { label:"Research Notes (Notion)", href:"#", tag:"l-brand" },
-        { label:"Google Scholar", href:"https://scholar.google.com/", tag:"l-accent" },
-        { label:"NotebookLM", href:"https://notebooklm.google.com/", tag:"l-dark" },
-        { label:"Google Learning", href:"https://grow.google/", tag:"l-dark" },
-        { label:"Microsoft Learn", href:"https://learn.microsoft.com/", tag:"l-dark" }
-      ],
-      noteKey: "next_research"
-    }
-  };
-
-  const elChooser = document.getElementById('chooser');
-  const elMode   = document.getElementById('mode');
-  const elHead   = document.getElementById('modeHeader');
-  const elBody   = document.getElementById('modeBody');
-  const homeBtn  = document.getElementById('homeBtn');
-
-  // Exposed for inline onclick
-  function go(modeKey){
-    renderMode(modeKey);
+  function showTab(tabId){
+    document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
+    document.getElementById(tabId).style.display = 'block';
   }
-
-  function renderMode(key){
-    const m = MODES[key];
-    if(!m) return;
-
-    // Header
-    elHead.innerHTML = `
-      <h2 style="margin:0 0 6px">${m.title}</h2>
-      <p class="lead">${m.lead}</p>
-    `;
-
-    const frag = document.createDocumentFragment();
-
-    // Primary actions card with links
-    const actions = document.createElement('div');
-    actions.className = 'card';
-
-    const links = document.createElement('div');
-    links.className = 'linkbar';
-
-    m.links.forEach(l => {
-      const a = document.createElement('a');
-      a.className = `link ${l.tag}`;
-      a.target = "_blank";
-      a.rel = "noopener";
-      a.href = l.href || '#';
-      a.textContent = l.label;
-      links.appendChild(a);
-    });
-
-    actions.appendChild(links);
-    frag.appendChild(actions);
-
-    // Next-step card
-    const note = document.createElement('div');
-    note.className = 'card';
-    note.innerHTML = `<h3 style="margin:0 0 8px;font-size:15px">Next step</h3>`;
-
-    const input = document.createElement('input');
-    input.className = 'field';
-    input.placeholder = 'Keep this one sentence long…';
-    input.value = store.get(m.noteKey, '');
-    input.addEventListener('change', () => {
-      store.set(m.noteKey, input.value.trim());
-    });
-
-    note.appendChild(input);
-
-    const hint = document.createElement('div');
-    hint.className = 'muted';
-    hint.style.marginTop = '6px';
-    hint.textContent = 'Saved locally. Aim for a single nudge, not a to-do list.';
-    note.appendChild(hint);
-
-    frag.appendChild(note);
-
-    // Swap content
-    elBody.innerHTML = '';
-    elBody.appendChild(frag);
-
-    // Toggle panels
-    elChooser.style.display = 'none';
-    elMode.style.display = 'block';
-    homeBtn.style.display = 'inline-block';
-  }
-
-  // Back button
-  homeBtn.addEventListener('click', () => {
-    elMode.style.display = 'none';
-    elChooser.style.display = 'block';
-    homeBtn.style.display = 'none';
-  });
 </script>
 </body>
-</html>
