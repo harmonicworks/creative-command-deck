@@ -15,7 +15,6 @@
   --brand:#7aa2ff;
   --accent:#66e0a3;
   --music:#ffb86b;
-  --danger:#ff6b6b;
   --br:16px;
   --shadow:0 8px 24px rgba(0,0,0,.28);
 }
@@ -30,7 +29,6 @@
     --brand:#345dff;
     --accent:#0aa86e;
     --music:#ffb86b;
-    --danger:#e54242;
     --shadow:0 6px 18px rgba(18,28,58,.12);
   }
 }
@@ -94,7 +92,6 @@ header{
 .b-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink); }
 .b-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015; }
 .b-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300; }
-.b-muted{ background:#232835; color:var(--muted); }
 
 .shelf{
   display:grid;
@@ -149,7 +146,7 @@ header{
 <header>
   <div>
     <div class="title">Creative Command Deck</div>
-    <div class="sub">Maintain · Learn · Language · Create · Connect</div>
+    <div class="sub">Maintain · Learn · Language · Create</div>
   </div>
   <div class="clock" id="clock">--:--</div>
 </header>
@@ -161,7 +158,6 @@ header{
     <button class="btn b-brand" onclick="showTab('learn')">Learn</button>
     <button class="btn b-accent" onclick="showTab('language')">Language</button>
     <button class="btn b-music" onclick="showTab('create')">Create</button>
-    <button class="btn b-muted" onclick="showTab('connect')">Connect</button>
   </div>
 </section>
 
@@ -180,6 +176,7 @@ header{
         <li><a href="https://calendar.google.com/" target="_blank">Calendar</a></li>
         <li><a href="https://photos.google.com/" target="_blank">Google Photos</a></li>
         <li><a href="https://tasks.google.com/" target="_blank">Google Tasks</a></li>
+        <li><a href="https://youtube.com/" target="_blank">YouTube</a></li>
       </ul>
     </div>
     <div class="tile">
@@ -249,20 +246,6 @@ header{
       <ul>
         <li><a href="https://www.notion.so/" target="_blank">Notion Writing</a></li>
         <li><a href="https://docs.google.com/" target="_blank">Google Docs</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Connect -->
-<div id="connect" class="tab">
-  <div class="shelf">
-    <div class="tile">
-      <h3>Platforms</h3>
-      <ul>
-        <li><a href="https://youtube.com/" target="_blank">YouTube</a></li>
-        <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
-        <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
       </ul>
     </div>
   </div>
