@@ -19,26 +19,10 @@
   --shadow:0 8px 24px rgba(0,0,0,.28);
 }
 
-@media (prefers-color-scheme:light){
-  :root{
-    --bg:#f6f7fb;
-    --panel:#ffffff;
-    --muted:#5a6275;
-    --text:#141821;
-    --ink:#0b1022;
-    --brand:#345dff;
-    --accent:#0aa86e;
-    --music:#ffb86b;
-    --shadow:0 6px 18px rgba(18,28,58,.12);
-  }
-}
-
 *{ box-sizing:border-box }
-html,body{ height:100% }
-
 body{
   margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  font-family:system-ui;
   background:var(--bg);
   color:var(--text);
 }
@@ -46,25 +30,18 @@ body{
 .wrap{
   max-width:1000px;
   margin:32px auto;
-  padding:0 16px 56px;
+  padding:16px;
 }
 
 header{
   display:flex;
   justify-content:space-between;
-  align-items:flex-end;
-  margin-bottom:18px;
+  align-items:center;
+  margin-bottom:16px;
 }
 
-.title{
-  font-weight:800;
-  font-size:clamp(18px,3.6vw,28px);
-}
-
-.sub{
-  color:var(--muted);
-  font-size:14px;
-}
+.title{ font-size:24px; font-weight:800 }
+.sub{ color:var(--muted); font-size:14px }
 
 .panel{
   background:var(--panel);
@@ -75,40 +52,34 @@ header{
 
 .chooser{
   display:grid;
-  gap:12px;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
 
 .btn{
   border:0;
-  border-radius:12px;
   padding:12px;
-  font-weight:800;
+  border-radius:12px;
+  font-weight:700;
   cursor:pointer;
-  color:var(--text);
 }
 
-.b-dark{ background:#1e232d; }
-.b-brand{ background:linear-gradient(135deg,var(--brand),#9ec0ff); color:var(--ink); }
-.b-accent{ background:linear-gradient(135deg,var(--accent),#9ff0c9); color:#062015; }
-.b-music{ background:linear-gradient(135deg,var(--music),#ffd79e); color:#2b1300; }
+.b-dark{ background:#222 }
+.b-brand{ background:var(--brand); color:#000 }
+.b-accent{ background:var(--accent); color:#000 }
+.b-music{ background:var(--music); color:#000 }
 
 .shelf{
   display:grid;
-  gap:12px;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+  margin-top:12px;
 }
 
 .tile{
   background:#1b202a;
-  border-radius:14px;
   padding:14px;
-}
-
-@media (prefers-color-scheme:light){
-  .tile{
-    background:#f0f3f9;
-  }
+  border-radius:14px;
 }
 
 .tile h3{
@@ -128,11 +99,16 @@ header{
   font-weight:600;
 }
 
+.center{
+  margin:18px 0;
+  border:2px dashed #2a3140;
+}
+
 .clock{
   font-variant-numeric:tabular-nums;
-  padding:8px 10px;
-  border-radius:10px;
+  padding:6px 10px;
   background:#1b202a;
+  border-radius:10px;
 }
 
 .tab{ display:none }
@@ -148,37 +124,36 @@ header{
     <div class="title">Creative Command Deck</div>
     <div class="sub">Maintain · Learn · Language · Create</div>
   </div>
-  <div class="clock" id="clock">--:--</div>
+  <div class="clock" id="clock"></div>
 </header>
 
-<!-- Tabs -->
 <section class="panel">
   <div class="chooser">
-    <button class="btn b-dark" onclick="showTab('maintain')">Common</button>
-    <button class="btn b-brand" onclick="showTab('learn')">Study</button>
+    <button class="btn b-dark" onclick="showTab('common')">Common</button>
+    <button class="btn b-brand" onclick="showTab('study')">Study</button>
     <button class="btn b-accent" onclick="showTab('language')">Language</button>
     <button class="btn b-music" onclick="showTab('create')">Create</button>
   </div>
 </section>
 
-<!-- Content -->
-<section class="panel" style="margin-top:14px">
+<section class="panel">
 
-<!-- Maintain -->
-<div id="maintain" class="tab active">
+<!-- COMMON -->
+<div id="common" class="tab active">
   <div class="shelf">
+
     <div class="tile">
       <h3>Infrastructure</h3>
       <ul>
         <li><a href="https://mail.google.com/" target="_blank">Email</a></li>
-        <li><a href="https://drive.google.com/" target="_blank">Google Drive</a></li>
-        <li><a href="https://www.dropbox.com/" target="_blank">Dropbox</a></li>
+        <li><a href="https://drive.google.com/" target="_blank">Drive</a></li>
         <li><a href="https://calendar.google.com/" target="_blank">Calendar</a></li>
-        <li><a href="https://photos.google.com/" target="_blank">Google Photos</a></li>
-        <li><a href="https://tasks.google.com/" target="_blank">Google Tasks</a></li>
+        <li><a href="https://photos.google.com/" target="_blank">Photos</a></li>
+        <li><a href="https://tasks.google.com/" target="_blank">Tasks</a></li>
         <li><a href="https://youtube.com/" target="_blank">YouTube</a></li>
       </ul>
     </div>
+
     <div class="tile">
       <h3>Marketplace</h3>
       <ul>
@@ -186,94 +161,154 @@ header{
         <li><a href="https://www.marktplaats.nl/" target="_blank">Marktplaats</a></li>
       </ul>
     </div>
-  </div>
-</div>
 
     <div class="tile">
-      <h3>AI Assistants</h3>
+      <h3>Background</h3>
       <ul>
-        <li><a href="https://chatgpt.com/" target="_blank">ChatGPT</a></li>
-        <li><a href="https://gemini.google.com/" target="_blank">Google Gemini</a></li>
-        <li><a href="https://notebooklm.google.com/" target="_blank">Google NotebookLM</a></li>
-        <li><a href="https://copilot.microsoft.com/" target="_blank">Microsoft Copilot</a></li>
-      </ul>
-    </div>
-</section>
-</div>
-
-<!-- Learn -->
-<div id="learn" class="tab">
-  <div class="shelf">
-
-    <div class="tile">
-      <h3>Courses</h3>
-      <ul>
-        <li><a href="https://www.mooc.fi/en/" target="_blank">MOOC.fi (AI & Python)</a></li>
-        <li><a href="https://www.futurelearn.com/" target="_blank">FutureLearn</a></li>
-        <li><a href="https://brilliant.org/" target="_blank">Brilliant</a></li>
-        <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
-      </ul>
-    </div>
-
-    <div class="tile">
-      <h3>Development</h3>
-      <ul>
-        <li><a href="https://github.com/dashboard" target="_blank">GitHub</a></li>
-        <li><a href="https://learn.microsoft.com/" target="_blank">Microsoft Learn</a></li>
-        <li><a href="https://grow.google/" target="_blank">Google Learning</a></li>
-      </ul>
-    </div>
-
-    <div class="tile">
-      <h3>AI Assistants</h3>
-      <ul>
-        <li><a href="https://chatgpt.com/" target="_blank">ChatGPT</a></li>
-        <li><a href="https://gemini.google.com/" target="_blank">Google Gemini</a></li>
-        <li><a href="https://notebooklm.google.com/" target="_blank">Google NotebookLM</a></li>
-        <li><a href="https://copilot.microsoft.com/" target="_blank">Microsoft Copilot</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-
-<!-- Language -->
-<div id="language" class="tab">
-  <div class="shelf">
-    <div class="tile">
-      <h3>Korean Study</h3>
-      <ul>
-        <li><a href="https://tt.hancomtaja.com/en" target="_blank">Hancom Taja</a></li>
-        <li><a href="https://www.lingodeer.com/" target="_blank">LingoDeer</a></li>
-        <li><a href="https://www.lingq.com/" target="_blank">LingQ</a></li>
-        <li><a href="https://courses.talktomeinkorean.com/" target="_blank">TalkToMeInKorean</a></li>
-        <li><a href="https://www.notion.so/" target="_blank">Language Notes (Notion)</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Create -->
-<div id="create" class="tab">
-  <div class="shelf">
-    <div class="tile">
-      <h3>Music</h3>
-      <ul>
-        <li><a href="https://strudel.cc/" target="_blank">Strudel</a></li>
-        <li><a href="https://jazzguitar.be/" target="_blank">JazzGuitar.be</a></li>
         <li><a href="https://music.youtube.com/" target="_blank">YouTube Music</a></li>
         <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
         <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
       </ul>
     </div>
+
+  </div>
+
+  <div class="tile center">
+    <h3>AI Assistants</h3>
+    <ul>
+      <li><a href="https://chatgpt.com/" target="_blank">ChatGPT</a></li>
+      <li><a href="https://gemini.google.com/" target="_blank">Gemini</a></li>
+      <li><a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a></li>
+      <li><a href="https://copilot.microsoft.com/" target="_blank">Copilot</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- STUDY -->
+<div id="study" class="tab">
+  <div class="shelf">
+
+    <div class="tile">
+      <h3>Courses</h3>
+      <ul>
+        <li><a href="https://www.mooc.fi/en/" target="_blank">MOOC.fi</a></li>
+        <li><a href="https://www.futurelearn.com/" target="_blank">FutureLearn</a></li>
+        <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
+        <li><a href="https://login.ou.nl/" target="_blank">OU Dutch</a></li>
+        <li><a href="https://www.open.edu/openlearn/" target="_blank">OU English</a></li>
+      </ul>
+    </div>
+
+    <div class="tile">
+      <h3>Research</h3>
+      <ul>
+        <li><a href="https://scholar.google.com/" target="_blank">Google Scholar</a></li>
+        <li><a href="https://www.researchgate.net/" target="_blank">ResearchGate</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="tile center">
+    <h3>AI Assistants</h3>
+    <ul>
+      <li><a href="https://chatgpt.com/" target="_blank">ChatGPT</a></li>
+      <li><a href="https://gemini.google.com/" target="_blank">Gemini</a></li>
+      <li><a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a></li>
+      <li><a href="https://copilot.microsoft.com/" target="_blank">Copilot</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- LANGUAGE -->
+<div id="language" class="tab">
+  <div class="shelf">
+
+    <div class="tile">
+      <h3>Korean</h3>
+      <ul>
+        <li><a href="https://tt.hancomtaja.com/en" target="_blank">Hancom Taja</a></li>
+        <li><a href="https://www.lingodeer.com/" target="_blank">LingoDeer</a></li>
+        <li><a href="https://www.lingq.com/" target="_blank">LingQ</a></li>
+        <li><a href="https://courses.talktomeinkorean.com/" target="_blank">TTMIK</a></li>
+      </ul>
+    </div>
+
+    <div class="tile">
+      <h3>Latin</h3>
+      <ul>
+        <li><a href="https://www.open.edu/openlearn/history-the-arts/getting-started-on-classical-latin/content-section-0" target="_blank">OU Latin</a></li>
+        <li><a href="https://www.duolingo.com/lesson" target="_blank">Duolingo</a></li>
+      </ul>
+    </div>
+
+    <div class="tile">
+      <h3>Swedish</h3>
+      <ul>
+        <li><a href="https://www.busuu.com/" target="_blank">Busuu</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="tile center">
+    <h3>AI Assistants</h3>
+    <ul>
+      <li><a href="https://chatgpt.com/" target="_blank">ChatGPT</a></li>
+      <li><a href="https://gemini.google.com/" target="_blank">Gemini</a></li>
+      <li><a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a></li>
+      <li><a href="https://copilot.microsoft.com/" target="_blank">Copilot</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- CREATE -->
+<div id="create" class="tab">
+  <div class="shelf">
+
+    <div class="tile">
+      <h3>Music</h3>
+      <ul>
+        <li><a href="https://strudel.cc/" target="_blank">Strudel</a></li>
+        <li><a href="https://jazzguitar.be/" target="_blank">JazzGuitar</a></li>
+        <li><a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
+        <li><a href="https://bandcamp.com/" target="_blank">Bandcamp</a></li>
+      </ul>
+    </div>
+
     <div class="tile">
       <h3>Writing</h3>
       <ul>
-        <li><a href="https://www.notion.so/" target="_blank">Notion Writing</a></li>
+        <li><a href="https://www.notion.so/" target="_blank">Notion</a></li>
         <li><a href="https://docs.google.com/" target="_blank">Google Docs</a></li>
-        <li><a href="http://127.0.0.1:8384/" target="_blank">Syncthing</a></li>
+        <li><a href="https://reedsy.com/" target="_blank">Reedsy</a></li>
       </ul>
     </div>
+
+    <div class="tile">
+      <h3>Visual</h3>
+      <ul>
+        <li><a href="https://www.behance.net/" target="_blank">Behance</a></li>
+      </ul>
+    </div>
+
+    <div class="tile">
+      <h3>Harmonic Works</h3>
+      <ul>
+        <li><a href="#">Your Website</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="tile center">
+    <h3>AI Assistants</h3>
+    <ul>
+      <li><a href="https://chatgpt.com/" target="_blank">ChatGPT</a></li>
+      <li><a href="https://gemini.google.com/" target="_blank">Gemini</a></li>
+      <li><a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a></li>
+      <li><a href="https://copilot.microsoft.com/" target="_blank">Copilot</a></li>
+    </ul>
   </div>
 </div>
 
@@ -281,19 +316,19 @@ header{
 </div>
 
 <script>
-function tick(){
-  const d = new Date();
-  const hh = String(d.getHours()).padStart(2,'0');
-  const mm = String(d.getMinutes()).padStart(2,'0');
-  document.getElementById('clock').textContent = `${hh}:${mm}`;
-}
-setInterval(tick,1000);
-tick();
-
 function showTab(id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
+function tick(){
+  const d=new Date();
+  document.getElementById("clock").textContent=
+    d.getHours().toString().padStart(2,'0')+":"+
+    d.getMinutes().toString().padStart(2,'0');
+}
+setInterval(tick,1000);
+tick();
 </script>
 
 </body>
