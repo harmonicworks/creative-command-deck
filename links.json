@@ -1,0 +1,139 @@
+{
+  "tabs": [
+    {
+      "id": "daily",
+      "label": "Daily",
+      "style": "b-dark",
+      "sections": [
+        {
+          "title": "Email & Files",
+          "links": [
+            { "label": "Gmail", "href": "https://mail.google.com/" },
+            { "label": "Outlook", "href": "https://outlook.live.com/" },
+            { "label": "Google Drive", "href": "https://drive.google.com/" },
+            { "label": "OneDrive", "href": "https://onedrive.live.com/" },
+            { "label": "Dropbox", "href": "https://www.dropbox.com/" }
+          ]
+        },
+        {
+          "title": "Productivity",
+          "links": [
+            { "label": "Google Calendar", "href": "https://calendar.google.com/" },
+            { "label": "Notion", "href": "https://www.notion.so/" },
+            { "label": "Trello", "href": "https://trello.com/" },
+            { "label": "YouTube", "href": "https://www.youtube.com/" }
+          ]
+        },
+        {
+          "title": "AI Assistants",
+          "links": [
+            { "label": "ChatGPT", "href": "https://chatgpt.com/" },
+            { "label": "Claude", "href": "https://claude.ai/" },
+            { "label": "Gemini", "href": "https://gemini.google.com/" },
+            { "label": "Copilot", "href": "https://copilot.microsoft.com/" },
+            { "label": "NotebookLM", "href": "https://notebooklm.google.com/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "learn",
+      "label": "Learn",
+      "style": "b-brand",
+      "sections": [
+        {
+          "title": "Courses",
+          "links": [
+            { "label": "Khan Academy", "href": "https://www.khanacademy.org/" },
+            { "label": "Coursera", "href": "https://www.coursera.org/" },
+            { "label": "edX", "href": "https://www.edx.org/" },
+            { "label": "FutureLearn", "href": "https://www.futurelearn.com/" },
+            { "label": "MIT OpenCourseWare", "href": "https://ocw.mit.edu/" }
+          ]
+        },
+        {
+          "title": "Research",
+          "links": [
+            { "label": "Google Scholar", "href": "https://scholar.google.com/" },
+            { "label": "Wikipedia", "href": "https://www.wikipedia.org/" },
+            { "label": "ResearchGate", "href": "https://www.researchgate.net/" },
+            { "label": "Wolfram Alpha", "href": "https://www.wolframalpha.com/" }
+          ]
+        },
+        {
+          "title": "Languages",
+          "links": [
+            { "label": "Duolingo", "href": "https://www.duolingo.com/" },
+            { "label": "LingQ", "href": "https://www.lingq.com/" },
+            { "label": "Busuu", "href": "https://www.busuu.com/" },
+            { "label": "DeepL", "href": "https://www.deepl.com/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "create",
+      "label": "Create",
+      "style": "b-accent",
+      "sections": [
+        {
+          "title": "Writing",
+          "links": [
+            { "label": "Google Docs", "href": "https://docs.google.com/" },
+            { "label": "Notion", "href": "https://www.notion.so/" },
+            { "label": "Reedsy", "href": "https://reedsy.com/" },
+            { "label": "Hemingway Editor", "href": "https://hemingwayapp.com/" }
+          ]
+        },
+        {
+          "title": "Visual",
+          "links": [
+            { "label": "Canva", "href": "https://www.canva.com/" },
+            { "label": "Figma", "href": "https://www.figma.com/" },
+            { "label": "Behance", "href": "https://www.behance.net/" }
+          ]
+        },
+        {
+          "title": "Music",
+          "links": [
+            { "label": "SoundCloud", "href": "https://soundcloud.com/" },
+            { "label": "Bandcamp", "href": "https://bandcamp.com/" },
+            { "label": "YouTube Music", "href": "https://music.youtube.com/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explore",
+      "label": "Explore",
+      "style": "b-music",
+      "sections": [
+        {
+          "title": "Read & Discover",
+          "links": [
+            { "label": "Medium", "href": "https://medium.com/" },
+            { "label": "TED", "href": "https://www.ted.com/" },
+            { "label": "Wikipedia", "href": "https://www.wikipedia.org/" },
+            { "label": "Pocket", "href": "https://getpocket.com/" }
+          ]
+        },
+        {
+          "title": "News",
+          "links": [
+            { "label": "BBC News", "href": "https://www.bbc.com/news" },
+            { "label": "The Guardian", "href": "https://www.theguardian.com/" },
+            { "label": "Reuters", "href": "https://www.reuters.com/" }
+          ]
+        },
+        {
+          "title": "Video & Audio",
+          "links": [
+            { "label": "YouTube", "href": "https://www.youtube.com/" },
+            { "label": "Vimeo", "href": "https://vimeo.com/" },
+            { "label": "Spotify", "href": "https://www.spotify.com/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
