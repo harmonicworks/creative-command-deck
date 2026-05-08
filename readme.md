@@ -1,155 +1,84 @@
-# Creative Command Deck — Silent Library Edition
+# Waypoint
 
-The **Creative Command Deck** is a lightweight personal dashboard built with plain HTML, CSS, and JavaScript.  
-It provides a simple and fast way to choose your daily focus — **Learn**, **Create**, or **Research** — and then shows only the tools relevant to that mode.
+**Waypoint** is a lightweight browser start page that helps you focus your day.
 
-Below the cockpit are the **Silent Library Shelves**: always-available reference links such as AI assistants, writing tools, study music, learning platforms, and general utilities.  
-The entire project is designed to be quiet, minimal, and distraction-free — a small start page for personal flow.
+Choose a mode — **Daily**, **Learn**, **Create**, or **Explore** — and get instant access to the tools that matter for that moment.
 
----
-
-## ✨ Features
-
-- Three-mode cockpit: **Learn**, **Create**, **Research**
-- Clean and minimal interface optimized for focus
-- Silent Library shelves for background and reference tools
-- Responsive layout without external frameworks
-- Local “Next step” notes stored automatically in the browser
-- Zero-dependency design — just one HTML file
+Built with plain HTML, CSS, and JavaScript. No frameworks, no dependencies, no login required.
 
 ---
 
-## 📁 File Structure
+## Features
+
+- Four focus modes: Daily, Learn, Create, Explore
+- Clean dark interface designed to reduce distraction
+- All links stored in a simple `links.json` file — no coding needed to edit
+- Works on any device via GitHub Pages
+- Zero dependencies — just two files
+
+---
+
+## File Structure
 
 ```
-
-course-start-page.html   → Main dashboard
-CHANGELOG.md             → Version notes and edits
-README.md                → Project documentation
-.gitignore               → Standard ignore file
-
-````
-
-You can rename `course-start-page.html` to `index.html` if you want GitHub Pages to load it directly.  
-(Or set a custom source in **Settings → Pages**.)
-
----
-
-## 🚀 Usage
-
-### Open locally
-1. Clone or download the repository  
-2. Open `course-start-page.html` in your browser  
-3. Select **Learn**, **Create**, or **Research**  
-4. Use the Silent Library Shelves for quick access to tools and platforms
-
-### GitHub Pages
-This repository is already deployed via GitHub Pages.  
-Any changes you push will appear live once GitHub Pages rebuilds.
-
----
-
-## 🛠 Customizing the Deck
-
-All customization happens directly inside `course-start-page.html`.
-
-### 1. Change mode links  
-Inside the `<script>` section you will find the `MODES` object:
-
-```js
-const MODES = {
-  learn: {
-    title: "📚 Learn",
-    lead: "Open your learning cockpit: languages, coding, ethics, and more.",
-    links: [
-      { label:"Learn Dashboard (Notion)", href:"#", tag:"l-brand" },
-      { label:"Course Overview (Docs)", href:"#", tag:"l-accent" },
-      // ...
-    ],
-    noteKey: "next_learn"
-  },
-  // create, research ...
-};
-````
-
-* Change `label` to update the button text
-* Change `href` to link to your page or tool
-* Change `tag` to adjust the visual style
-
-  * `l-brand` – primary accent
-  * `l-accent` – secondary accent
-  * `l-dark` – neutral
-  * `l-music` – warm accent
-
-### 2. Edit the Silent Library Shelves
-
-These shelves live in a `<section>` block near the bottom of the HTML:
-
-```html
-<div class="tile">
-  <h3>🧘 Focus</h3>
-  <ul>
-    <li><a href="https://chatgpt.com/">ChatGPT</a></li>
-    <li><a href="https://gemini.google.com/">Google Gemini</a></li>
-    <!-- ... -->
-  </ul>
-</div>
+index.html    → The start page
+links.json    → All your links, organized by tab and section
 ```
 
-You can freely add or remove `<li>` links or entire shelf tiles.
+---
 
-### 3. Modify styles
+## How to use it as your browser start page
 
-At the top of the file in `<style>`, you can adjust:
+1. Go to the live page (see GitHub Pages link above)
+2. Copy the URL
+3. Set it as your browser's start page or new tab page
 
-* Color variables
-* Spacing
-* Shadows
-* Dark/light mode overrides
-
-Everything is self-contained and easy to tweak.
+It works on any computer or device — just open the URL.
 
 ---
 
-## 💾 Local “Next Step” Notes
+## How to customize your links
 
-Each mode has a **Next step** field at the bottom of its cockpit. Notes are:
+All links live in `links.json`. Open it and you will see a structure like this:
 
-* Saved using `localStorage`
-* Stored per browser and device
-* Not synced or uploaded anywhere
-* Meant to be *one small nudge*, not a to-do list
-
----
-
-## 📌 Roadmap / Ideas (Optional)
-
-* Config file for links
-* Screenshot header banner
-* Compact or mobile-first variants
-* Keyboard shortcuts
-* Additional themes
-
----
-
-## 🤝 Contributing / Forking
-
-This project is intentionally simple and meant to be customized.
-
-Feel free to:
-
-* Fork it
-* Change the shelves
-* Replace links and tools
-* Edit styles or mode labels
-
-If you publish a fork, a small mention of the original Creative Command Deck is appreciated but optional.
-
----
-
-## 📄 License
-
-You’re free to adapt, reuse, or publish variants of this dashboard for personal or public use.
-
+```json
+{
+  "tabs": [
+    {
+      "id": "daily",
+      "label": "Daily",
+      "sections": [
+        {
+          "title": "Email & Files",
+          "links": [
+            { "label": "Gmail", "href": "https://mail.google.com/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
 ```
 
+To add a link: copy an existing `{ "label": "...", "href": "..." }` line and change the values.
+
+To remove a link: delete that line (and the comma before or after it).
+
+To add a section: copy an entire `{ "title": "...", "links": [...] }` block.
+
+Save and push — your page updates automatically.
+
+---
+
+## How to make your own version
+
+1. Click **Fork** (top right on GitHub)
+2. In your fork, edit `links.json` with your own links
+3. Enable GitHub Pages in your fork's Settings → Pages
+4. Use your own GitHub Pages URL as your start page
+
+---
+
+## License
+
+Free to use, fork, and adapt for personal or public use.
